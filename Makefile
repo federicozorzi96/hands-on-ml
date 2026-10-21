@@ -1,7 +1,8 @@
 PYTHON ?= python
 EXERCISE ?= 01_numpy_nn
+NOTEBOOK ?=
 
-.PHONY: install install-cpu numpy
+.PHONY: install install-cpu numpy notebook-to-py py-to-notebook
 install:
 	$(PYTHON) -m pip install -r $(EXERCISE)/requirements.txt
 
@@ -11,3 +12,11 @@ install-cpu:
 
 numpy:
 	$(PYTHON) 01_numpy_nn/reference_solution/train.py
+
+notebook-to-py:
+	@test -n "$(NOTEBOOK)" || (echo "Usage: make notebook-to-py NOTEBOOK=path/to/notebook.ipynb"; exit 1)
+	jupytext --to py:percent "$(NOTEBOOK)"
+
+py-to-notebook:
+	@test -n "$(NOTEBOOK)" || (echo "Usage: make py-to-notebook NOTEBOOK=path/to/notebook.py"; exit 1)
+	jupytext --to ipynb "$(NOTEBOOK)"
